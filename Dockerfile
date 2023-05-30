@@ -11,4 +11,5 @@ RUN go build -o mygoservice main.go
 FROM ubuntu:20.04
 WORKDIR /app
 COPY --from=build /app/mygoservice .
+EXPOSE 80
 ENTRYPOINT [ "./mygoservice" ]
