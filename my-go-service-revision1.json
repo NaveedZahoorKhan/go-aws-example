@@ -1,0 +1,78 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:140268421650:task-definition/my-go-service:1",
+    "containerDefinitions": [
+        {
+            "name": "my-go-service",
+            "image": "140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "my-go-service-80-tcp",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://location/ping || exit 1"
+                ],
+                "interval": 100,
+                "timeout": 60,
+                "retries": 3,
+                "startPeriod": 100
+            }
+        }
+    ],
+    "family": "my-go-service",
+    "executionRoleArn": "arn:aws:iam::140268421650:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "ecs.capability.container-health-check"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-05-30T10:06:26.770Z",
+    "registeredBy": "arn:aws:iam::140268421650:root",
+    "tags": []
+}
