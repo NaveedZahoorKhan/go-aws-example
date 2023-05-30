@@ -12,7 +12,7 @@ import (
 
 func main() {
 	h := server.Default(
-		server.WithHostPorts("127.0.0.1:80"),
+		server.WithHostPorts("0.0.0.0:80"),
 		server.WithMaxRequestBodySize(20<<20),
 		server.WithTransport(standard.NewTransporter),
 	)
