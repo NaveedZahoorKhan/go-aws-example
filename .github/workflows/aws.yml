@@ -32,9 +32,9 @@ on:
 
 env:
   AWS_REGION: us-east-1          # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test           # set this to your Amazon ECR repository name
+  ECR_REPOSITORY: go-aws-test           # set this to your Amazon ECR repository name
   ECS_SERVICE: my-go-service                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: arn:aws:ecs:us-east-1:140268421650:cluster/my-go-service                 # set this to your Amazon ECS cluster name
+  ECS_CLUSTER: my-go-service                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: my-go-service # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: go-aws-test           # set this to the name of the container in the
@@ -73,9 +73,9 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t go-aws-test:$IMAGE_TAG .
-        docker push go-aws-test:$IMAGE_TAG
-        echo "image=go-aws-test:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
