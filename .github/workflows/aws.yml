@@ -9,7 +9,7 @@ env:
   ECR_REPOSITORY: ${{ secrets.ECR_URI }}
   ECS_SERVICE: my-go-service
   ECS_CLUSTER: my-go-service
-  ECS_TASK_DEFINITION: my-go-service:1
+  ECS_TASK_DEFINITION: arn:aws:ecs:us-east-1:140268421650:task-definition/my-go-service:1
   CONTAINER_NAME: go-aws-test
 
 permissions:
