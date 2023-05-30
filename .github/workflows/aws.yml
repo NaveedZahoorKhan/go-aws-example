@@ -63,4 +63,4 @@ jobs:
         # AWS Session Token
         aws-session-token: ${{ env.aws-secret-access-key }}
         # AWS Region
-        aws-region: ${{ env.aws-region }}
+        aws-region: us-east-1
