@@ -43,3 +43,24 @@ jobs:
         # docker registry
         # repository name for the image
         repo: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test
+    - name: ecs-fargate
+      # You may pin to the exact commit or the version.
+      # uses: Dornach/ecs-fargate@915fc6f680ce0b960339f77cfaac53019e8b41cc
+      uses: Dornach/ecs-fargate@v0.2.4
+      with:
+        # Tags
+        tags: latest
+        # Service
+        service: my-go-service
+        # Cluster
+        cluster: my-go-service
+        # ecr
+        ecr: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test:latest
+        # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
+        aws-access-key-id: # optional
+        # AWS Secret Access Key. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
+        aws-secret-access-key: ${{ env.aws-access-key-id }}
+        # AWS Session Token
+        aws-session-token: ${{ env.aws-secret-access-key }}
+        # AWS Region
+        aws-region: ${{ env.REGION }}
