@@ -5,8 +5,8 @@ on:
     branches: [ "master" ]
 
 env:
-  AWS_REGION: echo ${{ secrets.REGION }}                                                             
-  ECR_REPOSITORY: echo ${{ secrets.ECR_URI }}                                                  
+  AWS_REGION:  ${{ secrets.REGION }}                                                             
+  ECR_REPOSITORY: ${{ secrets.ECR_URI }}                                                  
   ECS_SERVICE: arn:aws:ecs:us-east-1:140268421650:service/my-go-service/my-go-service-test     
   ECS_CLUSTER: arn:aws:ecs:us-east-1:140268421650:cluster/my-go-service                       
   ECS_TASK_DEFINITION: arn:aws:ecs:us-east-1:140268421650:task-definition/my-go-service:1       
@@ -38,7 +38,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: echo ${{ steps.login.outputs.registry }}
+        ECR_REGISTRY: ${{ steps.login.outputs.registry }}
         IMAGE_TAG: latest
       run: |
         # Build a docker container and
