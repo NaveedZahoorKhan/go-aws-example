@@ -57,10 +57,8 @@ jobs:
         # ecr
         ecr: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test:latest
         # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
-        aws-access-key-id: # optional
+        aws-access-key-id: ${{ env.aws-access-key-id }}
         # AWS Secret Access Key. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
-        aws-secret-access-key: ${{ env.aws-access-key-id }}
-        # AWS Session Token
-        aws-session-token: ${{ env.aws-secret-access-key }}
+        aws-secret-access-key: ${{ env.aws-secret-access-key }}
         # AWS Region
         aws-region: ${{ env.aws-region }}
