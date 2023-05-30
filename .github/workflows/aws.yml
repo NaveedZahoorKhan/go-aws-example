@@ -38,12 +38,13 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: ${{ steps.login.outputs.registry }}
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: ${{ env.ECR_REPOSITORY }}
         IMAGE_TAG: latest
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t go-aws-test:${{ env.IMAGE_TAG }} .
-        docker push go-aws-test:${{ env.IMAGE_TAG }}
-        echo "image=go-aws-test:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
+        docker build -t $REGISTERY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTERY/$REPOSITORY:$IMAGE_TAG
+        echo "image=$REGISTERY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
