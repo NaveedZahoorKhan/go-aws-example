@@ -5,12 +5,12 @@ on:
     branches: [ "master" ]
 
 env:
-  AWS_REGION:  ${{ secrets.REGION }}                                                             
-  ECR_REPOSITORY: ${{ secrets.ECR_URI }}                                                  
-  ECS_SERVICE: my-go-service     
-  ECS_CLUSTER: my-go-service                       
-  ECS_TASK_DEFINITION: my-go-service:1    
-  CONTAINER_NAME: go-aws-test            
+  AWS_REGION:  ${{ secrets.REGION }}
+  ECR_REPOSITORY: ${{ secrets.ECR_URI }}
+  ECS_SERVICE: my-go-service
+  ECS_CLUSTER: my-go-service
+  ECS_TASK_DEFINITION: my-go-service:1
+  CONTAINER_NAME: go-aws-test
 
 permissions:
   contents: read
@@ -23,7 +23,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -32,6 +31,7 @@ jobs:
         aws-region: ${{ secrets.REGION }}
 
     - name: Docker ECR
+      id: build
       # You may pin to the exact commit or the version.
       # uses: appleboy/docker-ecr-action@174bc7ab545bf5c4f4492240c4d839a987643559
       uses: appleboy/docker-ecr-action@v0.0.3
@@ -43,23 +43,18 @@ jobs:
         # docker registry
         # repository name for the image
         repo: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test
-    - name: ecs-fargate
-      # You may pin to the exact commit or the version.
-      # uses: Dornach/ecs-fargate@915fc6f680ce0b960339f77cfaac53019e8b41cc
-      uses: Dornach/ecs-fargate@v0.2.4
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        # Tags
-        tags: latest
-        # Service
-        service: my-go-service
-        # Cluster
-        cluster: my-go-service
-        # AWS Region
-        aws-region: ${{ env.aws-region }}
-        # ecr
-        ecr: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test:latest
-        # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
-        aws-access-key-id: ${{ env.aws-access-key-id }}
-        # AWS Secret Access Key. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
-        aws-secret-access-key: ${{ env.aws-secret-access-key }}
-      
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build.outputs.image }}
+  
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
