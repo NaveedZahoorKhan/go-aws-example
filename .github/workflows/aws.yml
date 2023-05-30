@@ -39,7 +39,7 @@ jobs:
         # amazon access key
         access_key: ${{ env.aws-access-key-id }}
         # amazon secret access key
-        secret_key: # ${{ env.aws-secret-access-key }}
+        secret_key: ${{ env.aws-secret-access-key }}
         # docker registry
         # repository name for the image
         repo: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test
@@ -49,7 +49,7 @@ jobs:
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build.outputs.image }}
+        image: sha256:d2b66ec3d93f7f637fdeb5e0118293336f949c4808122bf04e13df16ea4c26a9
   
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
