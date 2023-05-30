@@ -43,18 +43,23 @@ jobs:
         # docker registry
         # repository name for the image
         repo: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
+        force_tag: true
+    - name: ECS Automation
+      # You may pin to the exact commit or the version.
+      # uses: leelaprakash/gh-actions-automation-ecs-central@f817fd2ec040094a170307419a2305fe8d669f15
+      uses: leelaprakash/gh-actions-automation-ecs-central@test23
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: sha256:d2b66ec3d93f7f637fdeb5e0118293336f949c4808122bf04e13df16ea4c26a9
-  
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+        # ECR Repository
+        ecr-repo: 140268421650.dkr.ecr.us-east-1.amazonaws.com/go-aws-test 
+        # ECS Service
+        ecs-service: my-go-service
+        # ECS Service task definition
+        task-definition: arn:aws:ecs:us-east-1:140268421650:task-definition/my-go-service:1
+        # ECS Cluster
+        ecs-cluster: my-go-service
+        # AWS Region
+        region: ${{ env.AWS_REGION }}
+        # AWS Access Key
+        aws-access-key-id: ${{ env.aws-access-key-id }}
+        # AWS Secret Key
+        aws-secret-access-key: ${{ env.aws-secret-access-key }}
