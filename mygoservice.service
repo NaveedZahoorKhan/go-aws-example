@@ -1,0 +1,11 @@
+[Unit]
+Description=My GoLang Service
+After=network.target
+
+[Service]
+ExecStart=/home/ec2-user/go-aws-example/builds/mygoservice
+WorkingDirectory=/home/ec2-user/go-aws-example
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
